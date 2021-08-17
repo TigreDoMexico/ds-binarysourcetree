@@ -1,2 +1,7 @@
 # BinarySourceTree
-Árvore Binária de Busca em JS
+
+Árvore Binária de Busca escrita em diferentes linguagens
+
+## Linguagens
+- C
+- JavaScript
