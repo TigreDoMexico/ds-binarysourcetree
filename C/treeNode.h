@@ -12,6 +12,7 @@ typedef TREE_NODE* PNODE;
 PNODE constructor(int value);
 PNODE addNode(PNODE root, PNODE node);
 PNODE removeNode(PNODE root, int value);
+PNODE searchWithFather(PNODE root, int value, PNODE* father);
 PNODE searchNode(PNODE root, int value);
 int countNodes(PNODE root);
 void printNodes(PNODE root);

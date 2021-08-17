@@ -12,6 +12,29 @@ PNODE constructor(int value) {
 	return newNode;
 }
 
+PNODE searchNode(PNODE root, int value) {
+	if (root == NULL) return NULL;
+	if (root->valor == value) return root;
+
+	if (value > root->valor) return searchNode(root->nDir, value);
+	return searchNode(root->nEsq, value);
+}
+
+PNODE searchWithFather(PNODE root, int value, PNODE* father) {
+	PNODE curr = root;
+	*father = NULL;
+	
+	while (curr != NULL) {
+		if (curr->valor == value) return curr;
+		
+		*father = curr;
+		if (value > curr->valor) curr = curr->nDir;
+		else curr = curr->nEsq;
+	}
+	
+	return NULL;
+}
+
 PNODE addNode(PNODE root, PNODE node) {
 	if (root == NULL) return node;
 
@@ -24,15 +47,47 @@ PNODE addNode(PNODE root, PNODE node) {
 }
 
 PNODE removeNode(PNODE root, int value) {
+	PNODE father, curr, child, aux;
+	
+	curr = searchWithFather(root, value, &father);
+	
+	if (curr == NULL) return root;
+
+	// Caso só haja 1 filho
+	if (curr->nEsq == NULL || curr->nDir == NULL)
+	{
+		if (curr->nEsq == NULL) child = curr->nDir;
+		else child = curr->nEsq;
+	}
+	else // Caso só haja 2 filho
+	{
+		// Pegar o elemento mais a direita dos filhos a esquerda
+		aux = curr;
+		child = curr->nEsq;
+		
+		while (child->nDir) {
+			aux = child;
+			child = child->nDir;
+		}
+		
+		if (aux != curr) {
+			aux->nDir = child->nEsq;
+			child->nEsq = curr->nEsq;
+		}
+		
+		child->nDir = curr->nDir;		
+	}
+	
+	if (father == NULL) { // CASO SEJA A RAIZ PRIMÁRIA
+		free(curr);
+		return child;
+	} 
+	
+	if (value > father->valor) father->nDir = child;
+	else father->nEsq = child;
+	
+	free(curr);
 	return root;
-}
-
-PNODE searchNode(PNODE root, int value) {
-	if (root == NULL) return NULL;
-	if (root->valor == value) return root;
-
-	if (value > root->valor) return searchNode(root->nDir, value);
-	return searchNode(root->nEsq, value);
 }
 
 int countNodes(PNODE root) {

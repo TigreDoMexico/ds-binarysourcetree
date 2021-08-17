@@ -10,16 +10,16 @@ TREE constructorTree() {
 }
 
 void addValueInTree(PTREE tree, int value) {
-   PNODE newNode = constructor(value);
-   tree->root = addNode(tree->root, newNode);
+   	PNODE newNode = constructor(value);
+   	tree->root = addNode(tree->root, newNode);
 }
 
 void removeValueInTree(PTREE tree, int value) {
-
+   	tree->root = removeNode(tree->root, value);
 }
 
 int numberOfNodesInTree(PTREE tree) {
-	return countNodes(tree->root);
+   	return countNodes(tree->root);
 }
 
 void searchValueInTree(PTREE tree, int value) {
