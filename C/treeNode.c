@@ -4,22 +4,22 @@
 
 PNODE constructor(int value) {
 	PNODE newNode = (PNODE) malloc(sizeof(TREE_NODE));
-	
+
 	newNode->valor = value;
 	newNode->nDir = NULL;
 	newNode->nEsq = NULL;
-	
+
 	return newNode;
 }
 
-PNODE addNode(PNODE root, PNODE node) {	
+PNODE addNode(PNODE root, PNODE node) {
 	if (root == NULL) return node;
-	
+
 	if (node->valor > root->valor)
 		root->nDir = addNode(root->nDir, node);
 	else
 		root->nEsq = addNode(root->nEsq, node);
-	
+
 	return root;
 }
 
@@ -30,7 +30,7 @@ PNODE removeNode(PNODE root, int value) {
 PNODE searchNode(PNODE root, int value) {
 	if (root == NULL) return NULL;
 	if (root->valor == value) return root;
-	
+
 	if (value > root->valor) return searchNode(root->nDir, value);
 	return searchNode(root->nEsq, value);
 }

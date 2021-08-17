@@ -5,7 +5,7 @@
 TREE constructorTree() {
 	TREE tree;
 	tree.root = NULL;
-	
+
 	return tree;
 }
 
@@ -15,7 +15,7 @@ void addValueInTree(PTREE tree, int value) {
 }
 
 void removeValueInTree(PTREE tree, int value) {
-	
+
 }
 
 int numberOfNodesInTree(PTREE tree) {
@@ -24,7 +24,7 @@ int numberOfNodesInTree(PTREE tree) {
 
 void searchValueInTree(PTREE tree, int value) {
 	PNODE result = searchNode(tree->root, value);
-	
+
 	if (result == NULL) printf("VALOR %d NAO ENCONTRADO\n", value);
 	else printf("VALOR %d ENCONTRADO\n", result->valor);
 }

@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[]) {
 	TREE myTree = constructorTree();
-	
+
 	addValueInTree(&myTree, 15);
 	addValueInTree(&myTree, 12);
 	addValueInTree(&myTree, 50);
@@ -13,11 +13,11 @@ int main(int argc, char *argv[]) {
 	addValueInTree(&myTree, 100);
 	addValueInTree(&myTree, 5);
 	addValueInTree(&myTree, 1);
-	
+
 	printTree(&myTree);
-	
+
 	searchValueInTree(&myTree, 40);
 	searchValueInTree(&myTree, 16);
-	
+
 	printf("A ARVORE POSSUI %d ELEMENTOS", numberOfNodesInTree(&myTree));
 }

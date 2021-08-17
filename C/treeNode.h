@@ -4,7 +4,7 @@
 typedef struct treeNode {
 	int valor;
 	struct treeNode* nDir;
-	struct treeNode* nEsq;	
+	struct treeNode* nEsq;
 } TREE_NODE;
 
 typedef TREE_NODE* PNODE;
