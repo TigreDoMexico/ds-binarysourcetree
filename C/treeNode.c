@@ -90,9 +90,123 @@ PNODE removeNode(PNODE root, int value) {
 	return root;
 }
 
+PNODE deleteNode2(PNODE root, int value) {	
+	PNODE curr, father;
+	int isFilhoDireita = 0;
+	int isFilhoEsquerda = 0;	
+	
+	if (root == NULL) return NULL;
+	
+	curr = searchWithFather(root, value, &father);
+	if (father != NULL) {
+		isFilhoDireita = value > father->valor ? 1 : 0;
+		isFilhoEsquerda = value < father->valor ? 1 : 0;
+	}
+		
+	// 0 FILHOS
+	if (curr->nDir == NULL && curr->nEsq == NULL) {
+		free(curr);
+		
+	  	if (father != NULL) {
+	  		if (isFilhoDireita == 1) father->nDir = NULL;
+	  		else if (isFilhoEsquerda == 1) father->nEsq = NULL;
+	  		
+	  		return root;
+		}
+		
+		return NULL;
+	}
+	
+	// 1 FILHO
+	if (curr->nDir != NULL && curr->nEsq == NULL) { // FILHO A DIREITA
+		if (father != NULL) {
+			if (isFilhoDireita == 1) father->nDir = curr->nDir;
+	  		else if (isFilhoEsquerda == 1) father->nEsq = curr->nDir;
+			
+			free(curr);
+			return root;
+		}
+		
+		PNODE returnValue = curr->nDir;
+		free(curr);
+		
+		return returnValue;
+	}
+	
+	if (curr->nEsq != NULL && curr->nDir == NULL) { // FILHO A ESQUERDA
+		if (father != NULL) {
+			if (isFilhoDireita == 1) father->nDir = curr->nEsq;
+	  		else if (isFilhoEsquerda == 1) father->nEsq = curr->nEsq;
+			
+			free(curr);
+			return root;
+		}
+		
+		PNODE returnValue = curr->nEsq;
+		free(curr);
+		
+		return returnValue;
+	}
+	
+	// 2 FILHOS
+	// Pegar o elemento mais a direita dos filhos a esquerda
+	PNODE fatherPromoted = curr;
+	PNODE promoted = curr->nEsq;
+		
+	while (promoted->nDir != NULL) {
+		fatherPromoted = promoted;
+		promoted = promoted->nDir;
+	}
+	
+	if (fatherPromoted != curr) {
+		fatherPromoted->nDir = promoted->nEsq;
+		promoted->nEsq = curr->nEsq;
+	}
+		
+	promoted->nDir = curr->nDir;
+	
+	if (father != NULL) {
+	  	if (isFilhoDireita == 1) father->nDir = promoted;
+	  	else if (isFilhoEsquerda == 1) father->nEsq = promoted;
+	  	
+	  	free(curr);
+	  		
+	  	return root;
+	}
+	
+	free(curr);
+	return promoted;
+}
+
 int countNodes(PNODE root) {
 	if (root == NULL) return 0;
 	return countNodes(root->nEsq) + 1 + countNodes(root->nDir);
+}
+
+// Function to print binary tree in 2D
+// It does reverse inorder traversal
+void print2DUtil(PNODE root, int space)
+{
+    // Base case
+    if (root == NULL)
+        return;
+ 
+    // Increase distance between levels
+    space += COUNT;
+ 
+    // Process right child first
+    print2DUtil(root->nDir, space);
+ 
+    // Print current node after space
+    // count
+    int i;
+    printf("\n");
+    for (i = COUNT; i < space; i++)
+        printf(" ");
+    printf("%d\n", root->valor);
+ 
+    // Process left child
+    print2DUtil(root->nEsq, space);
 }
 
 void printNodes(PNODE root) {

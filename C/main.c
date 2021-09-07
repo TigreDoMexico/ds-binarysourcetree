@@ -17,11 +17,12 @@ int main(int argc, char *argv[]) {
 	printTree(&myTree);
 	
 	removeValueInTree(&myTree, 100);
-	removeValueInTree(&myTree, 12);
+	// removeValueInTree(&myTree, 12);
+	removeValueInTree(&myTree, 15);	
 	
-	addValueInTree(&myTree, 55);
-	addValueInTree(&myTree, 16);
-	addValueInTree(&myTree, 4);
+	//addValueInTree(&myTree, 55);
+	//addValueInTree(&myTree, 16);
+	//addValueInTree(&myTree, 4);
 
 	printTree(&myTree);
 
