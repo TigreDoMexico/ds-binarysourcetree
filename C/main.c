@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
 	removeValueInTree(&myTree, 100);
 	// removeValueInTree(&myTree, 12);
 	removeValueInTree(&myTree, 15);	
+	removeValueInTree(&myTree, 10);	
 	
 	//addValueInTree(&myTree, 55);
 	//addValueInTree(&myTree, 16);

@@ -2,6 +2,112 @@
 #include<malloc.h>
 #include "treeNode.h"
 
+/* PRIVATE METHODS */
+
+PNODE searchWithFather(PNODE root, int value, PNODE* father) {
+	PNODE curr = root;
+	*father = NULL;
+	
+	while (curr != NULL) {
+		if (curr->valor == value) return curr;
+		
+		*father = curr;
+		if (value > curr->valor) curr = curr->nDir;
+		else curr = curr->nEsq;
+	}
+	
+	return NULL;
+}
+
+int isFilhoDireita(PNODE node, PNODE father) {
+	if (father != NULL)
+		return node->valor > father->valor ? 1 : 0;
+	
+	return 0;
+}
+
+int isFilhoEsquerda(PNODE node, PNODE father) {
+	if (father != NULL)
+		return node->valor < father->valor ? 1 : 0;
+
+	return 0;
+}
+
+PNODE deleteNoChild(PNODE node, PNODE father, PNODE root) {
+	free(node);
+		
+	if (father != NULL) {
+		if (isFilhoDireita(node, father) == 1) father->nDir = NULL;
+		else if (isFilhoEsquerda(node, father) == 1) father->nEsq = NULL;
+	 		
+		return root;
+	}
+		
+	return NULL;
+}
+
+PNODE deleteOneChildDir(PNODE node, PNODE father, PNODE root) {
+	if (father != NULL) {
+		if (isFilhoDireita(node, father) == 1) father->nDir = node->nDir;
+	  	else if (isFilhoEsquerda(node, father) == 1) father->nEsq = node->nDir;
+			
+		free(node);
+		return root;
+	}
+		
+	PNODE returnValue = node->nDir;
+	free(node);
+		
+	return returnValue;
+}
+
+PNODE deleteOneChildEsq(PNODE node, PNODE father, PNODE root) {
+	if (father != NULL) {
+		if (isFilhoDireita(node, father) == 1) father->nDir = node->nEsq;
+	    else if (isFilhoEsquerda(node, father) == 1) father->nEsq = node->nEsq;
+			
+		free(node);
+		return root;
+	}
+
+	PNODE returnValue = node->nEsq;
+	free(node);
+		
+	return returnValue;
+}
+
+PNODE deleteTwoChild(PNODE node, PNODE father, PNODE root) {
+	// Pegar o elemento mais a direita dos filhos a esquerda
+	PNODE fatherPromoted = node;
+	PNODE promoted = node->nEsq;
+		
+	while (promoted->nDir != NULL) {
+		fatherPromoted = promoted;
+		promoted = promoted->nDir;
+	}
+	
+	if (fatherPromoted != node) {
+		fatherPromoted->nDir = promoted->nEsq;
+		promoted->nEsq = node->nEsq;
+	}
+		
+	promoted->nDir = node->nDir;
+	
+	if (father != NULL) {
+	  	if (isFilhoDireita(node, father) == 1) father->nDir = promoted;
+	  	else if (isFilhoEsquerda(node, father) == 1) father->nEsq = promoted;
+	  	
+	  	free(node);
+	  		
+	  	return root;
+	}
+	
+	free(node);
+	return promoted;
+}
+
+/* HEADER METHODS */
+
 PNODE constructor(int value) {
 	PNODE newNode = (PNODE) malloc(sizeof(TREE_NODE));
 
@@ -20,20 +126,6 @@ PNODE searchNode(PNODE root, int value) {
 	return searchNode(root->nEsq, value);
 }
 
-PNODE searchWithFather(PNODE root, int value, PNODE* father) {
-	PNODE curr = root;
-	*father = NULL;
-	
-	while (curr != NULL) {
-		if (curr->valor == value) return curr;
-		
-		*father = curr;
-		if (value > curr->valor) curr = curr->nDir;
-		else curr = curr->nEsq;
-	}
-	
-	return NULL;
-}
 
 PNODE addNode(PNODE root, PNODE node) {
 	if (root == NULL) return node;
@@ -92,90 +184,26 @@ PNODE removeNode(PNODE root, int value) {
 
 PNODE deleteNode2(PNODE root, int value) {	
 	PNODE curr, father;
-	int isFilhoDireita = 0;
-	int isFilhoEsquerda = 0;	
 	
-	if (root == NULL) return NULL;
-	
+	if (root == NULL) return NULL;	
 	curr = searchWithFather(root, value, &father);
-	if (father != NULL) {
-		isFilhoDireita = value > father->valor ? 1 : 0;
-		isFilhoEsquerda = value < father->valor ? 1 : 0;
-	}
-		
+			
 	// 0 FILHOS
 	if (curr->nDir == NULL && curr->nEsq == NULL) {
-		free(curr);
-		
-	  	if (father != NULL) {
-	  		if (isFilhoDireita == 1) father->nDir = NULL;
-	  		else if (isFilhoEsquerda == 1) father->nEsq = NULL;
-	  		
-	  		return root;
-		}
-		
-		return NULL;
+		return deleteNoChild(curr, father, root);
 	}
 	
 	// 1 FILHO
 	if (curr->nDir != NULL && curr->nEsq == NULL) { // FILHO A DIREITA
-		if (father != NULL) {
-			if (isFilhoDireita == 1) father->nDir = curr->nDir;
-	  		else if (isFilhoEsquerda == 1) father->nEsq = curr->nDir;
-			
-			free(curr);
-			return root;
-		}
-		
-		PNODE returnValue = curr->nDir;
-		free(curr);
-		
-		return returnValue;
+		return deleteOneChildDir(curr, father, root);
 	}
 	
 	if (curr->nEsq != NULL && curr->nDir == NULL) { // FILHO A ESQUERDA
-		if (father != NULL) {
-			if (isFilhoDireita == 1) father->nDir = curr->nEsq;
-	  		else if (isFilhoEsquerda == 1) father->nEsq = curr->nEsq;
-			
-			free(curr);
-			return root;
-		}
-		
-		PNODE returnValue = curr->nEsq;
-		free(curr);
-		
-		return returnValue;
+		return deleteOneChildEsq(curr, father, root);
 	}
 	
 	// 2 FILHOS
-	// Pegar o elemento mais a direita dos filhos a esquerda
-	PNODE fatherPromoted = curr;
-	PNODE promoted = curr->nEsq;
-		
-	while (promoted->nDir != NULL) {
-		fatherPromoted = promoted;
-		promoted = promoted->nDir;
-	}
-	
-	if (fatherPromoted != curr) {
-		fatherPromoted->nDir = promoted->nEsq;
-		promoted->nEsq = curr->nEsq;
-	}
-		
-	promoted->nDir = curr->nDir;
-	
-	if (father != NULL) {
-	  	if (isFilhoDireita == 1) father->nDir = promoted;
-	  	else if (isFilhoEsquerda == 1) father->nEsq = promoted;
-	  	
-	  	free(curr);
-	  		
-	  	return root;
-	}
-	
-	free(curr);
-	return promoted;
+	return deleteTwoChild(curr, father, root);
 }
 
 int countNodes(PNODE root) {
