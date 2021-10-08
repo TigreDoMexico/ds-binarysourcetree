@@ -108,3 +108,5 @@ dist
 
 # Compilados em C
 *.o
+
+vendor
