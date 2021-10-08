@@ -5,3 +5,4 @@
 ## Linguagens
 - C
 - JavaScript
+- PHP
