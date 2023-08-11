@@ -25,7 +25,7 @@ class Tree {
 
   print() {
     console.log('ÁRVORE')
-    TreeNode.printNodes(this.#root)
+    TreeNode.print2DTree(this.#root)
     console.log('')
   }
 

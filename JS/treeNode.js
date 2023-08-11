@@ -1,7 +1,9 @@
 import { stdout } from 'process';
 
 class TreeNode {
-  constructor(value){
+  static #SPACE_PRINT = 10
+
+  constructor(value) {
     // Definindo o valor
     this.value = value
 
@@ -37,7 +39,7 @@ class TreeNode {
   }
 
   static deleteData(root, value) {
-    if(!root) return null;
+    if (!root) return null;
     else if (value < root.value) {
       root.nodeEsq = this.deleteData(root.nodeEsq, value)
       return root
@@ -72,17 +74,34 @@ class TreeNode {
     }
   }
 
-  static printNodes(root) {
+  static printPreOrder(root) {
     if (root) {
       stdout.write(String(root.value))
       stdout.write('[')
-      this.printNodes(root.nodeEsq)
-      this.printNodes(root.nodeDir)
+      this.printPreOrder(root.nodeEsq)
+      this.printPreOrder(root.nodeDir)
       stdout.write(']')
     }
   }
 
-  static #findMinNode = function(root) {
+  static print2DTree(root, space = 0) {
+    if (root === null)
+      return;
+
+    space += this.#SPACE_PRINT;
+
+    this.print2DTree(root.nodeDir, space);
+
+    var i;
+    stdout.write("\n");
+    for (i = this.#SPACE_PRINT; i < space; i++)
+      stdout.write(" ");
+    stdout.write(String(root.value));
+
+    this.print2DTree(root.nodeEsq, space);
+  }
+
+  static #findMinNode = function (root) {
     if (root.nodeEsq === null) return root
     else return (this.#findMinNode(root.nodeEsq))
   }
