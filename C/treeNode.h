@@ -13,11 +13,10 @@ typedef TREE_NODE* PNODE;
 
 PNODE constructor(int value);
 PNODE addNode(PNODE root, PNODE node);
-PNODE removeNode(PNODE root, int value);
-PNODE deleteNode2(PNODE root, int value);
+PNODE deleteNode(PNODE root, int value);
 PNODE searchNode(PNODE root, int value);
 int countNodes(PNODE root);
-void printNodes(PNODE root);
-void print2DUtil(PNODE root, int space);
+void printPreOrder(PNODE root);
+void print2DTree(PNODE root, int space);
 
 #endif

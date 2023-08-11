@@ -15,7 +15,7 @@ void addValueInTree(PTREE tree, int value) {
 }
 
 void removeValueInTree(PTREE tree, int value) {
-   	tree->root = deleteNode2(tree->root, value);
+   	tree->root = deleteNode(tree->root, value);
 }
 
 int numberOfNodesInTree(PTREE tree) {
@@ -31,6 +31,6 @@ void searchValueInTree(PTREE tree, int value) {
 
 void printTree(PTREE tree) {
 	printf("ARVORE: ");
-	print2DUtil(tree->root, 0);
+	print2DTree(tree->root, 0);
 	printf("\n\n");
 }
