@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<malloc.h>
+#include<stdlib.h>
 #include "treeNode.h"
 
 /* PRIVATE METHODS */
@@ -145,13 +145,13 @@ PNODE removeNode(PNODE root, int value) {
 	
 	if (curr == NULL) return root;
 
-	// Caso só haja 1 filho
+	// Caso sï¿½ haja 1 filho
 	if (curr->nEsq == NULL || curr->nDir == NULL)
 	{
 		if (curr->nEsq == NULL) child = curr->nDir;
 		else child = curr->nEsq;
 	}
-	else // Caso só haja 2 filho
+	else // Caso sï¿½ haja 2 filho
 	{
 		// Pegar o elemento mais a direita dos filhos a esquerda
 		aux = curr;
@@ -170,7 +170,7 @@ PNODE removeNode(PNODE root, int value) {
 		child->nDir = curr->nDir;		
 	}
 	
-	if (father == NULL) { // CASO SEJA A RAIZ PRIMÁRIA
+	if (father == NULL) { // CASO SEJA A RAIZ PRIMï¿½RIA
 		free(curr);
 		return child;
 	} 
