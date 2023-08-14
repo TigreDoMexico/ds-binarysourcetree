@@ -1,0 +1,2 @@
+FROM gcc
+WORKDIR /source
