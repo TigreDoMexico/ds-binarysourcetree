@@ -25,7 +25,7 @@ docker build -t tigredomexico/gcc:1.0 .
 ### Como rodar
 
 ```
-docker run -i -t -v "%cd%":/source tigredomexico/gcc:1.0 gcc main.c tree.c treeNode.c -o /source/binary_tree
-docker run -i -t -v "%cd%":/source tigredomexico/gcc:1.0 ./binary_tree
+docker run --rm -i -t -v "%cd%":/source tigredomexico/gcc:1.0 gcc main.c tree.c treeNode.c -o /source/binary_tree
+docker run --rm -i -t -v "%cd%":/source tigredomexico/gcc:1.0 ./binary_tree
 ```
 
